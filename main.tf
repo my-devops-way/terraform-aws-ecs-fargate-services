@@ -63,14 +63,14 @@ resource "aws_ecs_service" "this" {
       container_port   = load_balancer.value.container_port
     }
   }
-  capacity_provider_strategy {
-    base              = 1
-    weight            = 1
-    capacity_provider = "FARGATE"
-  }
-  capacity_provider_strategy {
-    weight            = 1
-    capacity_provider = "FARGATE_SPOT"
+
+  dynamic "capacity_provider_strategy" {
+    for_each = var.services[count.index].capacity_provider_strategy
+    content {
+      capacity_provider = capacity_provider_strategy.value.capacity_provider
+      weight            = capacity_provider_strategy.value.weight
+      base              = lookup(capacity_provider_strategy.value, "base", null)
+    }
   }
 
 }
