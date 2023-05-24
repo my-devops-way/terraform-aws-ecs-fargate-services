@@ -31,15 +31,3 @@ variable "services" {
 
   }))
 }
-/*variable "vpc_id" {
-  type = string
-}*/
-//variable "container_definitions" {}
-//variable "task_family" {}
-//variable "execution_role_arn" {}
-//variable "task_role_arn" {}
-//variable "subnets" {}
-//variable "security_groups" {}
-//variable "container_name" {}
-//variable "container_port" {}
-//variable "target_group_arn" {}

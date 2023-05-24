@@ -1,14 +1,13 @@
 resource "aws_ecs_cluster" "this" {
   name = var.cluster_name
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
 }
 resource "aws_ecs_cluster_capacity_providers" "this" {
   cluster_name       = aws_ecs_cluster.this.name
-  capacity_providers = ["FARGATE"]
-  default_capacity_provider_strategy {
-    base              = 1
-    weight            = 100
-    capacity_provider = "FARGATE"
-  }
+  capacity_providers = ["FARGATE", "FARGATE_SPOT"]
 }
 #task definition
 data "aws_ecs_task_definition" "this" {
@@ -54,7 +53,6 @@ resource "aws_ecs_service" "this" {
     subnets          = var.services[count.index].network_configuration.subnets
     security_groups  = var.services[count.index].network_configuration.security_groups
   }
-  launch_type            = "FARGATE"
   task_definition        = "${aws_ecs_task_definition.this[count.index].family}:${max(aws_ecs_task_definition.this[count.index].revision, data.aws_ecs_task_definition.this[count.index].revision)}"
   enable_execute_command = var.services[count.index].enable_execute_command
   dynamic "load_balancer" {
@@ -65,4 +63,14 @@ resource "aws_ecs_service" "this" {
       container_port   = load_balancer.value.container_port
     }
   }
+  capacity_provider_strategy {
+    base              = 1
+    weight            = 1
+    capacity_provider = "FARGATE"
+  }
+  capacity_provider_strategy {
+    weight            = 1
+    capacity_provider = "FARGATE_SPOT"
+  }
+
 }
