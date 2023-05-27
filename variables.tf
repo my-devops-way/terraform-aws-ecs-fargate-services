@@ -28,13 +28,15 @@ variable "services" {
         })
         })
       ), [])
-      bind_mount_volumes = any
+      bind_mount_volumes = optional(list(object({
+        name = string
+      })), [])
     })
-    load_balancer = list(object({
+    load_balancer = optional(list(object({
       target_group_arn = string
       container_name   = string
       container_port   = string
-    }))
+    })), [])
     enable_execute_command     = string
     capacity_provider_strategy = list(any)
   }))
