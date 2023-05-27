@@ -1,15 +1,23 @@
+# #####################
+# ecs cluster resources
+# #####################
+
 resource "aws_ecs_cluster" "this" {
   name = var.cluster_name
   setting {
     name  = "containerInsights"
-    value = "enabled"
+    value = var.containerInsights
   }
+
 }
 resource "aws_ecs_cluster_capacity_providers" "this" {
   cluster_name       = aws_ecs_cluster.this.name
   capacity_providers = ["FARGATE", "FARGATE_SPOT"]
 }
-#task definition
+# ##############################
+# ecs task definitions resources
+# ##############################
+
 data "aws_ecs_task_definition" "this" {
   count           = length(var.services)
   task_definition = aws_ecs_task_definition.this[count.index].family
@@ -29,7 +37,9 @@ resource "aws_ecs_task_definition" "this" {
     content {
       name = volume.value["name"]
       efs_volume_configuration {
-        file_system_id = volume.value["efs_volume_configuration"].file_system_id
+        file_system_id     = volume.value["efs_volume_configuration"].file_system_id
+        root_directory     = volume.value["efs_volume_configuration"].root_directory
+        transit_encryption = volume.value["efs_volume_configuration"].transit_encryption
       }
 
     }
@@ -42,6 +52,9 @@ resource "aws_ecs_task_definition" "this" {
   }
 }
 
+# ######################
+# ecs services resources
+# ######################
 resource "aws_ecs_service" "this" {
   count                = length(var.services)
   name                 = var.services[count.index].name

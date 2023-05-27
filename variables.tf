@@ -19,8 +19,16 @@ variable "services" {
       execution_role_arn    = string
       memory                = string
       cpu                   = string
-      efs_volumes           = any
-      bind_mount_volumes    = any
+      efs_volumes = optional(list(object({
+        name = string
+        efs_volume_configuration = object({
+          file_system_id     = string
+          root_directory     = optional(string)
+          transit_encryption = optional(string)
+        })
+        })
+      ), [])
+      bind_mount_volumes = any
     })
     load_balancer = list(object({
       target_group_arn = string
@@ -30,4 +38,8 @@ variable "services" {
     enable_execute_command     = string
     capacity_provider_strategy = list(any)
   }))
+}
+variable "containerInsights" {
+  type    = string
+  default = "enabled"
 }
