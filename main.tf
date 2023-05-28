@@ -29,9 +29,13 @@ resource "aws_ecs_task_definition" "this" {
   task_role_arn            = var.services[count.index].task_definition.task_role_arn
   execution_role_arn       = var.services[count.index].task_definition.execution_role_arn
   requires_compatibilities = ["FARGATE"]
-  memory                   = var.services[count.index].task_definition.memory
-  cpu                      = var.services[count.index].task_definition.cpu
-  network_mode             = "awsvpc"
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "X86_64"
+  }
+  memory       = var.services[count.index].task_definition.memory
+  cpu          = var.services[count.index].task_definition.cpu
+  network_mode = "awsvpc"
   dynamic "volume" {
     for_each = var.services[count.index].task_definition.efs_volumes
     content {
@@ -50,17 +54,24 @@ resource "aws_ecs_task_definition" "this" {
       name = volume.value["name"]
     }
   }
+  dynamic "ephemeral_storage" {
+    for_each = [for s in [lookup(var.services[count.index].task_definition, "ephemeral_storage", null)] : s if s != null]
+    content {
+      size_in_gib = var.services[count.index].task_definition.ephemeral_storage
+    }
+  }
 }
 
 # ######################
 # ecs services resources
 # ######################
 resource "aws_ecs_service" "this" {
-  count                = length(var.services)
-  name                 = var.services[count.index].name
-  cluster              = aws_ecs_cluster.this.arn
-  desired_count        = var.services[count.index].desired_count
-  force_new_deployment = var.services[count.index].force_new_deployment
+  count                             = length(var.services)
+  name                              = var.services[count.index].name
+  cluster                           = aws_ecs_cluster.this.arn
+  desired_count                     = var.services[count.index].desired_count
+  force_new_deployment              = var.services[count.index].force_new_deployment
+  health_check_grace_period_seconds = var.services[count.index].health_check_grace_period_seconds
   network_configuration {
     assign_public_ip = var.services[count.index].network_configuration.assign_public_ip
     subnets          = var.services[count.index].network_configuration.subnets
@@ -82,7 +93,8 @@ resource "aws_ecs_service" "this" {
     content {
       capacity_provider = capacity_provider_strategy.value.capacity_provider
       weight            = capacity_provider_strategy.value.weight
-      base              = lookup(capacity_provider_strategy.value, "base", null)
+      // base              = lookup(capacity_provider_strategy.value, "base", null)
+      base = capacity_provider_strategy.value.base
     }
   }
 
