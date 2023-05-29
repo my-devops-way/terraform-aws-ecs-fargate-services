@@ -1,8 +1,9 @@
 variable "cluster_name" {
+  description = "The name of the ECS cluster"
   type        = string
-  description = "(Optional) - The name of the cluster if the cluster does not exist"
 }
 variable "services" {
+  description = "Provides an ECS service - effectively a task that is expected to run until an error occurs or a user terminates it (typically a webserver or a database)."
   type = list(object({
     name                              = string
     desired_count                     = number
@@ -48,6 +49,11 @@ variable "services" {
   }))
 }
 variable "containerInsights" {
-  type    = string
-  default = "enabled"
+  description = "(Optional) enable CloudWatch Container Insights for a cluster"
+  type        = string
+  default     = "enabled"
+  validation {
+    condition     = var.containerInsights == "enabled" || var.containerInsights == "disabled"
+    error_message = "The containerInsights value must be \"enabled\" or \"disabled\""
+  }
 }
