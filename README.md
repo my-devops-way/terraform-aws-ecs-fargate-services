@@ -1,7 +1,7 @@
 # AWS ECS Cluster Fargate multi Service Terraform Module ( front, back, apis ...)
 
 This module create a basic cluster configuration for deploy common Docker apps (frontend, backend, apis).
-![aws_fargate_ecs](https://github.com/my-devops-way/CICD/blob/main/svg/infrastructure/fargate_ecs_bakend.svg)
+![aws_fargate_ecs](https://github.com/my-devops-way/CICD/blob/main/svg/infrastructure/ecs_fargate_bakend_frontend.svg)
 <!-- BEGIN_TF_DOCS -->
 
 
