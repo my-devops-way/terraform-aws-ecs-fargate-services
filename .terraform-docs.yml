@@ -3,7 +3,7 @@ formatter: ""   # this is required
 
 version: ""
 
-header-from: main.tf
+header-from: "./docs/HEADER.md"
 footer-from: ""
 
 recursive:
@@ -22,7 +22,7 @@ content: |-
   {{ .Modules }}
   {{ .Resources }}
   {{ .Inputs }}
-  {{ include "./SERVICE.md" }}
+  {{ include "./docs/SERVICE.md" }}
   {{ .Outputs }}
   {{ .Footer }}
 
