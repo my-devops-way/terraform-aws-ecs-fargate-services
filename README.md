@@ -4,7 +4,7 @@
 
 This module provides a straightforward approach to creating an ECS cluster with one or multiple services, each having their corresponding task definitions.
 
-![aws\_fargate\_ecs](https://github.com/my-devops-way/CICD/blob/main/svg/infrastructure/ecs_fargate_bakend_frontend.svg)
+![aws\_fargate\_ecs](https://github.com/my-devops-way/CICD/blob/main/svg/infrastructure/ecs_fargate_bakend_frontend.svg?raw=true)
 
 **IMPORTANT!** Please note that this module does not handle all the necessary components for running your application magically. Therefore, it is essential to create additional resources to ensure the successful operation of your application.
 
