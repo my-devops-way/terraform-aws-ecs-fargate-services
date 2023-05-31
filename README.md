@@ -117,7 +117,7 @@ resource "aws_lb_listener" "this" {
 
 ### ecs cluster and service
 module "ecs_fargate" {
-  source       = "my-devops-way/terraform-aws-ecs-fargate-services/aws"
+  source       = "my-devops-way/ecs-fargate-services/aws"
   cluster_name = local.cluster_name
   services = [
     {
@@ -251,7 +251,7 @@ resource "aws_lb_listener" "this" {
 
 ### ecs cluster and service
 module "ecs_fargate" {
-  source       = "my-devops-way/terraform-aws-ecs-fargate-services/aws"
+  source       = "my-devops-way/ecs-fargate-services/aws"
   cluster_name = local.cluster_name
   services = [
     {
@@ -441,7 +441,7 @@ resource "aws_efs_mount_target" "this" {
 
 ### ecs cluster and service
 module "ecs_fargate" {
-  source       = "my-devops-way/terraform-aws-ecs-fargate-services/aws"
+  source       = "my-devops-way/ecs-fargate-services/aws"
   cluster_name = local.cluster_name
   services = [
     {
