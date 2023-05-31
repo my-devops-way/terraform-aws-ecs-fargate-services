@@ -22,7 +22,7 @@ This module provides a straightforward approach to creating an ECS cluster with 
 ## Examples
 <details>
 
-**<summary>Full Example</summary>**
+**<summary> ALB integration </summary>**
 
 ```hcl
 locals {

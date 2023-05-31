@@ -20,10 +20,10 @@ content: |-
   ## Examples
   <details>
 
-    **<summary>Full Example</summary>**
+    **<summary> ALB integration </summary>**
 
     ```hcl
-    {{ include "./examples/full/main.tf" }}
+    {{ include "./examples/alb/main.tf" }}
     ```
   </details>
 
