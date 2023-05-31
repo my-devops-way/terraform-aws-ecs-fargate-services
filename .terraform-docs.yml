@@ -17,6 +17,16 @@ sections:
 content: |-
 
   {{ .Header }}
+  ## Examples
+  <details>
+
+    **<summary>Full Example</summary>**
+
+    ```hcl
+    {{ include "./examples/full/main.tf" }}
+    ```
+  </details>
+
   {{ .Requirements }}
   {{ .Providers }}
   {{ .Modules }}

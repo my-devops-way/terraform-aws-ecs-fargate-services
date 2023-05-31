@@ -24,7 +24,11 @@ variable "services" {
       capacity_provider = string
       weight            = string
       base              = optional(string)
-    })), [])
+      })), [{
+      capacity_provider = "FARGATE"
+      weight            = "100"
+      base              = 1
+    }])
     task_definition = object({
       family                = string
       container_definitions = string
