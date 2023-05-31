@@ -125,3 +125,29 @@ module "ecs_fargate" {
   ]
 
 }
+
+### autoscaling
+## target
+resource "aws_appautoscaling_target" "nginx" {
+  max_capacity       = 4
+  min_capacity       = 2
+  resource_id        = "service/${local.cluster_name}/${module.ecs_fargate.service_name[0]}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
+## cpu policy
+resource "aws_appautoscaling_policy" "cpu" {
+  name               = "${local.cluster_name}-nginx-service-cpu-autoscaling-policy"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.nginx.resource_id
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+
+    target_value = 60
+  }
+}

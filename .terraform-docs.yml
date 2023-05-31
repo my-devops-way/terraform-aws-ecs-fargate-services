@@ -28,6 +28,14 @@ content: |-
   </details>
   <details>
 
+    **<summary> ALB and Autoscaling integration </summary>**
+
+    ```hcl
+    {{ include "./examples/alb_autoscaling/main.tf" }}
+    ```
+  </details>
+  <details>
+
     **<summary> ALB and EFS integration </summary>**
 
     ```hcl

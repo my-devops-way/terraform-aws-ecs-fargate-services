@@ -10,6 +10,7 @@ locals {
   execution_role_arn = "arn:aws:iam::xxxxxxxxxxxx:role/ecsTaskExecutionRole"
 
 }
+
 ### security_groups
 ## service sg
 resource "aws_security_group" "nginx" {
@@ -31,7 +32,6 @@ resource "aws_security_group" "efs" {
 }
 
 ### security_groups rules
-
 ## nginx service to internet
 resource "aws_vpc_security_group_egress_rule" "nginx" {
   description       = "internet"
@@ -73,6 +73,7 @@ resource "aws_vpc_security_group_ingress_rule" "efs" {
   to_port                      = "2049"
   ip_protocol                  = "tcp"
 }
+
 ### ALB
 ## alb
 resource "aws_alb" "this" {
@@ -102,7 +103,7 @@ resource "aws_lb_listener" "this" {
   }
 }
 
-## efs
+### efs
 resource "aws_efs_file_system" "this" {
   tags = {
     name = "MyEfs"
@@ -117,7 +118,7 @@ resource "aws_efs_mount_target" "this" {
   security_groups = [aws_security_group.efs.id]
 }
 
-## Module
+### ecs cluster and service
 module "ecs_fargate" {
   source       = "my-devops-way/terraform-aws-ecs-fargate-services/aws"
   cluster_name = local.cluster_name
