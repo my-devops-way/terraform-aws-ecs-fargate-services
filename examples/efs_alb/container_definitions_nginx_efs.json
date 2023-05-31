@@ -1,0 +1,46 @@
+[
+    {
+        "name": "nginx",
+        "image": "nginx",
+        "cpu": 0,
+        "portMappings": [
+            {
+                "name": "nginx-80-tcp",
+                "containerPort": 80,
+                "hostPort": 80,
+                "protocol": "tcp",
+                "appProtocol": "http"
+            }
+        ],
+        "essential": true,
+        "environment": [],
+        "environmentFiles": [],
+        "mountPoints": [
+            { 
+                "containerPath": "/usr/share/nginx/html/mypath",
+                "sourceVolume": "myefs"
+            }
+        ],
+        "volumesFrom": [],
+        "ulimits": [],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-group": "/ecs/nginx",
+                "awslogs-create-group": "true",
+                "awslogs-region": "us-east-1",
+                "awslogs-stream-prefix": "ecs"
+            }
+        },
+        "healthCheck": {
+            "command": [
+                "CMD-SHELL",
+                "curl localhost:80|| exit 1"
+            ],
+            "interval": 20,
+            "timeout": 5,
+            "retries": 3,
+            "startPeriod": 60
+        }
+    }
+]
