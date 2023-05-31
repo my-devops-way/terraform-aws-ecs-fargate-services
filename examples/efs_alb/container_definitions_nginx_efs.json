@@ -15,7 +15,12 @@
         "essential": true,
         "environment": [],
         "environmentFiles": [],
-        "mountPoints": [],
+        "mountPoints": [
+            { 
+                "containerPath": "/usr/share/nginx/html/mypath",
+                "sourceVolume": "myefs"
+            }
+        ],
         "volumesFrom": [],
         "ulimits": [],
         "logConfiguration": {

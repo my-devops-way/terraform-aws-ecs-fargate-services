@@ -26,6 +26,14 @@ content: |-
     {{ include "./examples/alb/main.tf" }}
     ```
   </details>
+  <details>
+
+    **<summary> ALB and EFS integration </summary>**
+
+    ```hcl
+    {{ include "./examples/efs_alb/main.tf" }}
+    ```
+  </details>
 
   {{ .Requirements }}
   {{ .Providers }}
