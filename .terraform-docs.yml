@@ -48,7 +48,9 @@ content: |-
   {{ .Modules }}
   {{ .Resources }}
   {{ .Inputs }}
+
   {{ include "./docs/SERVICE.md" }}
+
   {{ .Outputs }}
   {{ .Footer }}
 
